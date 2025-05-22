@@ -1,64 +1,40 @@
-# Генерация случайного вещественного числа в диапазоне [min, max]
-def random_double(min, max)
+# Генерация случайного числа
+def rand_num(min, max)
   rand * (max - min) + min
 end
 
-# 1. Создание массива из n случайных вещественных чисел [-100, 100]
-n = 15 # n >= 10
-arr = Array.new(n) { random_double(-100.0, 100.0) }
-puts "Исходный массив:"
-puts arr.each_slice(6).map { |slice| slice.map { |num| "%8.2f" % num }.join }.join("\n")
+# 1. Создаем массив из 15 чисел [-100, 100]
+nums = Array.new(15) { rand_num(-100, 100) }
+puts "Массив: #{nums.map { |n| '%.2f' % n }.join(', ')}"
 
-# 2. Количество положительных элементов
-positive_count = arr.count { |num| num > 0 }
-puts "\nКоличество положительных элементов: #{positive_count}"
+# 2. Считаем положительные числа и сумму после последнего нуля
+positives = nums.count { |n| n > 0 }
+last_zero = nums.rindex(0.0)
+sum_after_zero = last_zero ? nums[last_zero+1..-1].sum : 0
 
-# Сумма элементов после последнего нуля
-last_zero_index = arr.rindex(0.0)
-sum_after_zero = last_zero_index ? arr[(last_zero_index + 1)..-1].sum : 0.0
-puts "Сумма элементов после последнего нуля: #{sum_after_zero.round(2)}"
+puts "Положительных: #{positives}"
+puts "Сумма после нуля: #{sum_after_zero.round(2)}"
 
-# 3. Поиск самой длинной возрастающей последовательности
+# 3. Находим самую длинную возрастающую последовательность
 longest = []
 current = []
 
-arr.each do |num|
-  if current.empty? || num > current.last
-    current << num
-  else
-    longest = current.dup if current.size > longest.size
-    current = [num]
-  end
+nums.each do |n|
+  current = (current.empty? || n > current.last) ? current + [n] : [n]
+  longest = current if current.size > longest.size
 end
-longest = current.dup if current.size > longest.size
 
-puts "\nСамая длинная возрастающая последовательность (#{longest.size} элементов):"
-puts longest.each_slice(6).map { |slice| slice.map { |num| "%8.2f" % num }.join }.join("\n")
+puts "Самая длинная последовательность: #{longest.map { |n| '%.2f' % n }.join(', ')}"
 
-# 4. Вывод массива N×6 в двух вариантах
-def print_special_array(n)
-  total = n * 6
-  arr = (100..100 + total - 1).to_a
-  
-  puts "\nN = #{n}"
-  puts "Вывод 1".ljust(30) + "Вывод 2"
-  puts "-" * 60
-  
+# 4. Выводим массив 4×6 и 8×6
+def print_array(n)
+  arr = (100..100+n*6-1).to_a
+  puts "\nN=#{n}:"
   n.times do |i|
-    # Вывод 1 - всегда прямой порядок
-    line1 = arr[i*6, 6].map { |x| "%4d" % x }.join
-    
-    # Вывод 2 - для нечетных строк обратный порядок
-    line2 = if i.even?
-              arr[i*6, 6].map { |x| "%4d" % x }.join
-            else
-              arr[i*6, 6].reverse.map { |x| "%4d" % x }.join
-            end
-    
-    puts "#{line1}    |    #{line2}"
+    part = arr[i*6, 6]
+    puts "#{part.map { |x| '%4d' % x }.join} | #{i.odd? ? part.reverse.map { |x| '%4d' % x }.join : part.map { |x| '%4d' % x }.join}"
   end
 end
 
-# Вывод для N=4 и N=8
-print_special_array(4)
-print_special_array(8)
+print_array(4)
+print_array(8)
