@@ -23,6 +23,7 @@ void printArray(const vector<double> arr, const string title) {
     }
     std::cout << '\n';
 }
+// Функция для вывода массива в двух вариантах
 void printSpecialArray(int N) {
     const int totalElements = N * 6;
     vector<int> arr(totalElements);
