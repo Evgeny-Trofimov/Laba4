@@ -23,7 +23,46 @@ void printArray(const vector<double> arr, const string title) {
     }
     std::cout << '\n';
 }
-
+void printSpecialArray(int N) {
+    const int totalElements = N * 6;
+    vector<int> arr(totalElements);
+    
+    // Заполняем массив последовательными числами начиная с 100
+    arr[0] = 100;
+    for (int i = 1; i < totalElements; i++) {
+        arr[i] = arr[i-1] + 1;
+    }
+    
+    // Вывод заголовков
+    cout << "N = " << N << endl;
+    cout << setw(15) << "Вывод 1" << setw(25) << "Вывод 2" << endl;
+    
+    // Вывод массивов
+    for (int i = 0; i < N; i++) {
+        // Вывод 1 - обычный порядок
+        for (int j = 0; j < 6; j++) {
+            cout << setw(4) << arr[i*6 + j];
+        }
+        
+        cout << "         ";
+        
+        // Вывод 2 - для нечетных строк обратный порядок
+        if (i % 2 == 0) {
+            // Четные строки (0, 2, 4...) - обычный порядок
+            for (int j = 0; j < 6; j++) {
+                cout << setw(4) << arr[i*6 + j];
+            }
+        } else {
+            // Нечетные строки (1, 3, 5...) - обратный порядок
+            for (int j = 5; j >= 0; j--) {
+                cout << setw(4) << arr[i*6 + j];
+            }
+        }
+        
+        cout << endl;
+    }
+    cout << endl;
+}
 int main() {
     // 1. Создание и инициализация массива случайными вещественными числами
     const int n = 15;  // n >= 10
@@ -73,31 +112,9 @@ int main() {
     printArray(longestIncreasing, "Самая длинная возрастающая последовательность");
 
     // 4. Вывод массива длиной N×6 по 6 элементов в строку
-    const int N = 4;
-    const int totalElements = N * 6;
-    vector<int> outputArr(totalElements);
-    outputArr[0] = 100;
-    for (int i = 1; i < totalElements; ++i) {
-        outputArr[i] = outputArr[i - 1] + 1;
-    }
-    cout << "Массив длиной " << totalElements << ":\n";
-    for (int i = 0; i < totalElements; ++i) {
-        cout << setw(4) << outputArr[i];
-        if ((i + 1) % 6 == 0) cout << '\n';
-    }
-    
-    const int N1=8;
-    const int totalElements1 = N1 * 6;
-    vector<int> outputArr1(totalElements1);
-    outputArr1[0] = 100;
-    for (int i = 1; i < totalElements1; ++i) {
-        outputArr1[i] = outputArr1[i - 1] + 1;
-    }
-    cout << "Массив длиной " << totalElements1 << ":\n";
-    for (int i = 0; i < totalElements1; ++i) {
-        cout << setw(4) << outputArr1[i];
-        if ((i + 1) % 6 == 0) cout << '\n';
-    }
+    // Вывод для N = 4 и N = 8
+    printSpecialArray(4);
+    printSpecialArray(8);
 
     return 0;
 }
