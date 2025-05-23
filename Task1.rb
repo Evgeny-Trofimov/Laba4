@@ -1,4 +1,3 @@
-# Подключаем необходимые библиотеки
 require 'bigdecimal'
 require 'bigdecimal/util'
 require 'bigdecimal/math'
